@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pillow
+pytesseract
+tiktoken
+openai
+deepdiff
+google-generativeai
+requests
+python-multipart
+python-dateutil
+pywinrm
