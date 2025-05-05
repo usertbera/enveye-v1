@@ -301,8 +301,16 @@ async def remote_collect(request: Request):
         password = body.get("password")
         app_folder = body.get("app_folder")
         app_type = body.get("app_type")
+        vm_type = body.get("vm_type", "windows").lower()
+        snapshot_label = body.get("label", "").strip()
 
-        print(f"\u2705 Remote Collect Request: {vm_ip}, AppFolder={app_folder}")
+        print(f"🔄 Remote Collect: VM={vm_ip}, Type={vm_type}, AppFolder={app_folder}")
+
+        if vm_type != "windows":
+            return JSONResponse(content={"error": "Only Windows remote collection supported currently."}, status_code=501)
+
+        remote_agent = "C:\\Tools\\Collector\\enveye-agent.exe"
+        snapshot_dir = "C:\\Tools\\Collector"
 
         session = winrm.Session(
             f'http://{vm_ip}:5985/wsman',
@@ -310,69 +318,77 @@ async def remote_collect(request: Request):
             transport='ntlm'
         )
 
-        backend_ip = "10.40.10.214"
-        upload_url = f"http://{backend_ip}:8000/upload_snapshot"
+        # Build expected snapshot filename
+        hostname = vm_ip.replace('.', '-')
+        app_name = os.path.basename(app_folder).replace(" ", "").replace(".", "_")
+        timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
+        snapshot_filename = f"{hostname}_{app_name}_WIN_{timestamp}_{snapshot_label}.json"
+        remote_snapshot_path = f"{snapshot_dir}\\{snapshot_filename}"
 
-        # Check if agent exists remotely
-        check_command = "if (!(Test-Path 'C:\\Tools\\Collector\\collector_agent.exe')) { exit 1 }"
-        check_result = session.run_ps(check_command)
+        # Construct argument string safely
+        arg_parts = [
+            f'--app-folder "{app_folder}"',
+            f'--app-type {app_type}'
+        ]
+        if snapshot_label:
+            arg_parts.append(f'--label {snapshot_label}')
+        arg_parts.append(f'--output {snapshot_filename}')
 
-        if check_result.status_code != 0:
-            print("\u26A1 Remote agent not found, uploading...")
+        arg_string = " ".join(arg_parts)
 
-            local_agent_path = BASE_DIR / "collector" / "collector_agent.exe"
-            with open(local_agent_path, "rb") as agent_file:
-                encoded_agent = base64.b64encode(agent_file.read()).decode()
+        ps_cmd = f"""
+        Start-Process -FilePath '{remote_agent}' -ArgumentList '{arg_string}' -Wait -NoNewWindow
+        """
 
-            ps_script = f"""
-            $bytes = [System.Convert]::FromBase64String(\"{encoded_agent}\")
-            $path = 'C:\\Tools\\Collector\\collector_agent.exe'
-            New-Item -ItemType Directory -Force -Path (Split-Path $path) | Out-Null
-            [System.IO.File]::WriteAllBytes($path, $bytes)
-            """
-            upload_result = session.run_ps(ps_script)
-            print("✅ Agent upload result:", upload_result.status_code)
+        print("🚀 Executing agent remotely...")
+        print("🧪 PowerShell Command:\n", ps_cmd)
 
-        collector_command = (
-            f'cmd /c "C:\\Tools\\Collector\\collector_agent.exe '
-            f'--app-folder \"{app_folder}\" '
-            f'--app-type {app_type} '
-            f'--upload-url {upload_url}"'
-        )
+        exec_result = session.run_ps(ps_cmd)
+        print("✅ Remote agent launched.")
+        print("STDOUT:", exec_result.std_out.decode())
+        print("STDERR:", exec_result.std_err.decode())
 
-        print(f"\u2705 Prepared Command: {collector_command}")
-
-        def run_remote_cmd():
-            return session.run_cmd(collector_command)
-
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            future = executor.submit(run_remote_cmd)
-            try:
-                result = future.result(timeout=900)
-            except concurrent.futures.TimeoutError:
-                print("\u274C Remote Collector Timed Out after 10 minutes!")
-                return JSONResponse(content={"error": "Timeout after 10 minutes."}, status_code=500)
-
-        print(f"\u2705 Remote Collector exited with code {result.status_code}")
-        print("✅ StdOut:", result.std_out.decode(errors="ignore"))
-        print("✅ StdErr:", result.std_err.decode(errors="ignore"))
-
-        if result.status_code == 0:
-            return {
-                "status": "success",
-                "message": f"Snapshot from {vm_ip} collected and uploaded!",
-                "vm_hostname": vm_ip
-            }
+        # Poll for the file to appear
+        for attempt in range(30):  # 30s timeout
+            check_cmd = f"Test-Path '{remote_snapshot_path}'"
+            poll_result = session.run_ps(check_cmd)
+            if "True" in poll_result.std_out.decode():
+                print("📁 Snapshot file detected.")
+                break
+            time.sleep(1)
         else:
-            return JSONResponse(
-                content={"error": f"Remote agent failed. Code {result.status_code}"},
-                status_code=500
-            )
+            return JSONResponse(content={"error": "Snapshot file not found after waiting."}, status_code=500)
+
+        # Read and decode the file
+        read_cmd = f"$b = Get-Content -Path '{remote_snapshot_path}' -Raw; [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($b))"
+        read_result = session.run_ps(read_cmd)
+
+        encoded_data = read_result.std_out.decode().strip()
+        if not encoded_data or "Exception" in encoded_data:
+            return JSONResponse(content={"error": "Failed to retrieve snapshot file content."}, status_code=500)
+
+        try:
+            decoded_bytes = base64.b64decode(encoded_data)
+        except Exception as decode_err:
+            print("❌ Base64 decode failed.")
+            return JSONResponse(content={"error": "Failed to decode base64 content."}, status_code=500)
+
+        local_file_path = SNAPSHOT_DIR / snapshot_filename
+        with open(local_file_path, "wb") as f:
+            f.write(decoded_bytes)
+
+        print(f"✅ Snapshot pulled and saved to: {local_file_path}")
+        return {
+            "status": "success",
+            "message": f"Snapshot from {vm_ip} collected and uploaded!",
+            "vm_hostname": vm_ip
+        }
 
     except Exception as e:
-        print("\u274C FULL EXCEPTION in /remote_collect")
+        print("❌ FULL EXCEPTION in /remote_collect")
         print(traceback.format_exc())
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
         
         
 @app.get("/list_snapshots")
