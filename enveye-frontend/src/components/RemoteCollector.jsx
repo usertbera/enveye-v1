@@ -7,9 +7,11 @@ function RemoteCollector() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [appFolder, setAppFolder] = useState('');
+  const [vmType, setVmType] = useState("windows");
   const [appType, setAppType] = useState('desktop');
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
+  const [snapshotLabel, setSnapshotLabel] = useState('');
 
   const handleCollect = async () => {
     if (!ip || !appFolder || !appType) {
@@ -26,7 +28,9 @@ function RemoteCollector() {
         username,
         password,
         app_folder: appFolder,
-        app_type: appType
+		vm_type: vmType,
+        app_type: appType,
+		label: snapshotLabel
       });
 
       if (response.data && response.data.status === 'success') {
@@ -79,6 +83,17 @@ function RemoteCollector() {
           onChange={(e) => setAppFolder(e.target.value)}
           className="w-full px-4 py-2 border rounded focus:outline-none focus:ring"
         />
+		
+		{/* ✅ New Select for VM Type */}
+        <select
+          className="w-full border px-3 py-2 rounded"
+          value={vmType}
+          onChange={(e) => setVmType(e.target.value)}
+        >
+          <option value="windows">Windows</option>
+          <option value="linux">Linux</option>
+          <option value="mac">macOS</option>
+        </select>
 
         <select
           value={appType}
@@ -88,6 +103,15 @@ function RemoteCollector() {
           <option value="desktop">Desktop</option>
           <option value="web">Web</option>
         </select>
+		<select
+		  value={snapshotLabel}
+		  onChange={(e) => setSnapshotLabel(e.target.value)}
+		  className="w-full px-4 py-2 border rounded focus:outline-none focus:ring"
+		>
+		  <option value="">Select Snapshot Type</option>
+		  <option value="good">Good</option>
+		  <option value="faulty">Faulty</option>
+		</select>
 
         <button
           onClick={handleCollect}

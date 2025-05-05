@@ -21,6 +21,7 @@ import re
 import unicodedata
 from openai import OpenAI
 from tiktoken import get_encoding
+from uuid import uuid4
 
 
 
@@ -106,7 +107,7 @@ async def compare_snapshots(file1: UploadFile = File(...), file2: UploadFile = F
         print(f"\u274C Exception during /compare: {e}")
         return JSONResponse(content={"error": str(e)}, status_code=400)
 
-# --- Explain Differences API ---
+# --- Explain Differences API (Depreciated) ---
 @app.post("/explain")
 async def explain_diff(payload: dict = Body(...)):
     try:
@@ -173,6 +174,120 @@ Log Content (if any):
 
     except Exception as e:
         print("❌ Error during AI explanation:", e)
+        return {"error": str(e)}
+
+
+#--- AI Diagnosis ---
+# --- Diagnosis Session Management ---
+sessions = {}
+
+class DiagnosisSession:
+    def __init__(self, initial_input):
+        self.session_id = str(uuid4())
+        self.created_at = datetime.utcnow().isoformat()
+        self.initial_input = initial_input
+        self.ai_messages = []
+        self.user_followups = []
+        self.status = "active"
+
+    def to_dict(self):
+        return {
+            "session_id": self.session_id,
+            "created_at": self.created_at,
+            "initial_input": self.initial_input,
+            "ai_messages": self.ai_messages,
+            "user_followups": self.user_followups,
+            "status": self.status
+        }
+
+@app.post("/start_diagnosis")
+async def start_diagnosis(payload: dict = Body(...)):
+    session = DiagnosisSession(payload)
+
+    prompt = generate_initial_prompt(payload)
+    response_text = call_openai_with_prompt(prompt)
+
+    session.ai_messages.append({"role": "assistant", "content": response_text})
+    sessions[session.session_id] = session
+
+    return {
+        "session_id": session.session_id,
+        "ai_response": response_text
+    }
+
+@app.post("/followup")
+async def followup(payload: dict = Body(...)):
+    session_id = payload.get("session_id")
+    followup_text = payload.get("followup_text")
+
+    session = sessions.get(session_id)
+    if not session:
+        return JSONResponse(content={"error": "Invalid session"}, status_code=404)
+
+    session.user_followups.append({"type": "text", "content": followup_text})
+    full_prompt = compile_session_prompt(session)
+    ai_response = call_openai_with_prompt(full_prompt)
+    session.ai_messages.append({"role": "assistant", "content": ai_response})
+
+    return {"session_id": session_id, "ai_response": ai_response}
+
+@app.get("/session/{session_id}")
+async def view_session(session_id: str):
+    session = sessions.get(session_id)
+    if not session:
+        return JSONResponse(content={"error": "Not found"}, status_code=404)
+    return session.to_dict()
+
+@app.post("/session/{session_id}/close")
+async def close_session(session_id: str):
+    session = sessions.get(session_id)
+    if session:
+        session.status = "resolved"
+    return {"message": f"Session {session_id} marked as resolved"}
+    
+@app.post("/followup")
+async def followup(payload: dict = Body(...)):
+    session_id = payload.get("session_id")
+    followup_text = payload.get("followup_text")
+
+    session = sessions.get(session_id)
+    if not session:
+        return JSONResponse(content={"error": "Invalid session"}, status_code=404)
+
+    session.user_followups.append({
+        "type": "text",
+        "content": followup_text
+    })
+
+    # Compile a conversation prompt from history
+    full_prompt = compile_session_prompt(session)
+    ai_response = call_openai_with_prompt(full_prompt)
+
+    session.ai_messages.append({"role": "assistant", "content": ai_response})
+    return {
+        "session_id": session_id,
+        "ai_response": ai_response
+    }
+
+
+@app.post("/flag")
+async def flag_feedback(payload: dict = Body(...)):
+    try:
+        session_id = payload.get("session_id")
+        reason = payload.get("reason", "No reason provided")
+
+        feedback_entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "session_id": session_id,
+            "reason": reason
+        }
+
+        with open("flagged_feedback.jsonl", "a") as f:
+            f.write(json.dumps(feedback_entry) + "\n")
+
+        return {"message": "Feedback recorded"}
+    except Exception as e:
+        print("Feedback error:", e)
         return {"error": str(e)}
 
 
@@ -390,4 +505,44 @@ def clean_ocr_text(text):
     text = re.sub(r'\s+', ' ', text).strip()
 
     return text
+    
+def generate_initial_prompt(payload):
+    diff = payload.get("diff", {})
+    error_message = payload.get("error_message", "")
+    screenshot_text = payload.get("error_screenshot_text", "")
+    log_content = payload.get("log_content", "")
+
+    return f"""
+You are an expert in diagnosing system and application configuration issues.
+
+Analyze the following:
+- DeepDiff data: {json.dumps(diff, indent=2)}
+- Error message (if any): {error_message or 'None'}
+- OCR from screenshot (if any): {screenshot_text or 'None'}
+- Relevant logs (if any): {log_content or 'None'}
+
+Please summarize what might have gone wrong, and guide what else should be collected if not enough information is available.
+"""
+
+def compile_session_prompt(session):
+    messages = [
+        {"role": "system", "content": "You are a highly skilled IT troubleshooting assistant helping diagnose configuration issues across systems."},
+        {"role": "user", "content": generate_initial_prompt(session.initial_input)}
+    ]
+    for ai_msg, user_msg in zip(session.ai_messages, session.user_followups):
+        messages.append({"role": "assistant", "content": ai_msg["content"]})
+        messages.append({"role": "user", "content": user_msg["content"]})
+    return messages
+
+def call_openai_with_prompt(messages):
+    if isinstance(messages, str):
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": messages}
+        ]
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=messages
+    )
+    return response.choices[0].message.content.strip()
 
