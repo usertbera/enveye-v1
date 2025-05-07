@@ -19,7 +19,7 @@ import base64
 import io
 import re
 import unicodedata
-from openai import OpenAI
+from ai_provider import send_prompt
 from tiktoken import get_encoding
 from uuid import uuid4
 
@@ -39,7 +39,7 @@ app.add_middleware(
 
 # --- Configure Gemini API ---
 #genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+#client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # --- Serve Frontend Static Files ---
 app.mount("/static", StaticFiles(directory="../enveye-frontend/dist"), name="static")
@@ -205,7 +205,7 @@ async def start_diagnosis(payload: dict = Body(...)):
     session = DiagnosisSession(payload)
 
     prompt = generate_initial_prompt(payload)
-    response_text = call_openai_with_prompt(prompt)
+    response_text = send_prompt(prompt)
 
     session.ai_messages.append({"role": "assistant", "content": response_text})
     sessions[session.session_id] = session
@@ -226,7 +226,7 @@ async def followup(payload: dict = Body(...)):
 
     session.user_followups.append({"type": "text", "content": followup_text})
     full_prompt = compile_session_prompt(session)
-    ai_response = call_openai_with_prompt(full_prompt)
+    ai_response = send_prompt(full_prompt)
     session.ai_messages.append({"role": "assistant", "content": ai_response})
 
     return {"session_id": session_id, "ai_response": ai_response}
@@ -261,7 +261,7 @@ async def followup(payload: dict = Body(...)):
 
     # Compile a conversation prompt from history
     full_prompt = compile_session_prompt(session)
-    ai_response = call_openai_with_prompt(full_prompt)
+    ai_response = send_prompt(full_prompt)
 
     session.ai_messages.append({"role": "assistant", "content": ai_response})
     return {
@@ -549,7 +549,8 @@ def compile_session_prompt(session):
         messages.append({"role": "assistant", "content": ai_msg["content"]})
         messages.append({"role": "user", "content": user_msg["content"]})
     return messages
-
+    
+"""
 def call_openai_with_prompt(messages):
     if isinstance(messages, str):
         messages = [
@@ -561,4 +562,5 @@ def call_openai_with_prompt(messages):
         messages=messages
     )
     return response.choices[0].message.content.strip()
+"""
 
