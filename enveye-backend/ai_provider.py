@@ -1,18 +1,16 @@
-import os
 import json
 from openai import OpenAI
 import google.generativeai as genai
+from config_loader import CONFIG
+import os
 
-# Load API keys
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# Load from config
+AI_VENDOR = CONFIG["ai"]["vendor"].lower()
+MODEL_NAME = CONFIG["ai"]["model"]
 
 # Configure clients
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
-genai.configure(api_key=GOOGLE_API_KEY)
-
-# Select AI vendor
-AI_VENDOR = os.getenv("AI_VENDOR", "openai").lower()
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def send_prompt(messages):
     if AI_VENDOR == "openai":
@@ -26,7 +24,7 @@ def _send_openai(messages):
     if isinstance(messages, str):
         messages = [{"role": "user", "content": messages}]
     response = openai_client.chat.completions.create(
-        model="gpt-4",
+        model=MODEL_NAME,
         messages=messages
     )
     return response.choices[0].message.content.strip()
@@ -37,6 +35,6 @@ def _send_gemini(messages):
     else:
         prompt = messages
 
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel(MODEL_NAME)
     response = model.generate_content(prompt)
     return response.text.strip()

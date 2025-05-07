@@ -23,6 +23,10 @@ from ai_provider import send_prompt
 from tiktoken import get_encoding
 from uuid import uuid4
 import paramiko
+import time
+from config_loader import CONFIG
+import sys
+sys.path.append(str(Path(__file__).resolve().parent))
 
 
 
@@ -61,6 +65,16 @@ async def serve_spa():
 @app.get("/snapshots")
 async def serve_spa():
     return FileResponse("../enveye-frontend/dist/index.html")
+    
+    
+@app.get("/config.json")
+async def get_config():
+    try:
+        with open("config.json") as f:
+            return JSONResponse(content=json.load(f))
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
 
 # --- Upload Snapshot API ---
 @app.post("/upload_snapshot")
@@ -326,8 +340,8 @@ async def remote_collect(request: Request):
         
 # for remote colection in Windows VM
 async def handle_windows(vm_ip, username, password, app_folder, app_type, snapshot_label, snapshot_filename):
-    remote_agent = "C:\\Tools\\Collector\\enveye-agent.exe"
-    snapshot_dir = "C:\\Tools\\Collector"
+    remote_agent = CONFIG["agent_paths"]["windows"]
+    snapshot_dir = os.path.dirname(remote_agent)
     remote_snapshot_path = f"{snapshot_dir}\\{snapshot_filename}"
 
     try:
@@ -399,8 +413,8 @@ async def handle_windows(vm_ip, username, password, app_folder, app_type, snapsh
         
 # for remote collection Linux and Mac VMs        
 async def handle_ssh_based(vm_ip, username, password, app_folder, app_type, snapshot_label, snapshot_filename):
-    remote_agent_path = "/opt/enveye-agent/enveye-agent"  # Adjust if different
-    snapshot_dir = "/tmp/enveye"  # Or other temp directory
+    remote_agent_path = CONFIG["agent_paths"]["linux"]
+    snapshot_dir = os.path.dirname(remote_agent_path)
     remote_snapshot_path = f"{snapshot_dir}/{snapshot_filename}"
 
     arg_parts = [
