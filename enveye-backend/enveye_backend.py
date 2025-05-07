@@ -22,6 +22,7 @@ import unicodedata
 from ai_provider import send_prompt
 from tiktoken import get_encoding
 from uuid import uuid4
+import paramiko
 
 
 
@@ -304,43 +305,52 @@ async def remote_collect(request: Request):
         vm_type = body.get("vm_type", "windows").lower()
         snapshot_label = body.get("label", "").strip()
 
-        print(f"🔄 Remote Collect: VM={vm_ip}, Type={vm_type}, AppFolder={app_folder}")
+        hostname = vm_ip.replace('.', '-')
+        app_name = os.path.basename(app_folder).replace(" ", "").replace(".", "_")
+        timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
+        snapshot_filename = f"{hostname}_{app_name}_{vm_type.upper()}_{timestamp}_{snapshot_label}.json"
 
-        if vm_type != "windows":
-            return JSONResponse(content={"error": "Only Windows remote collection supported currently."}, status_code=501)
+        if vm_type == "windows":
+            return await handle_windows(vm_ip, username, password, app_folder, app_type, snapshot_label, snapshot_filename)
+        elif vm_type in ["linux", "macos", "mac"]:
+            return await handle_ssh_based(vm_ip, username, password, app_folder, app_type, snapshot_label, snapshot_filename)
+        else:
+            return JSONResponse(content={"error": f"Unsupported VM type: {vm_type}"}, status_code=400)
 
-        remote_agent = "C:\\Tools\\Collector\\enveye-agent.exe"
-        snapshot_dir = "C:\\Tools\\Collector"
+    except Exception:
+        print("❌ FULL EXCEPTION in /remote_collect")
+        print(traceback.format_exc())
+        return JSONResponse(content={"error": "Internal Server Error"}, status_code=500)
+        
+        
+        
+# for remote colection in Windows VM
+async def handle_windows(vm_ip, username, password, app_folder, app_type, snapshot_label, snapshot_filename):
+    remote_agent = "C:\\Tools\\Collector\\enveye-agent.exe"
+    snapshot_dir = "C:\\Tools\\Collector"
+    remote_snapshot_path = f"{snapshot_dir}\\{snapshot_filename}"
 
+    try:
         session = winrm.Session(
             f'http://{vm_ip}:5985/wsman',
             auth=(username, password),
             transport='ntlm'
         )
 
-        # Build expected snapshot filename
-        hostname = vm_ip.replace('.', '-')
-        app_name = os.path.basename(app_folder).replace(" ", "").replace(".", "_")
-        timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
-        snapshot_filename = f"{hostname}_{app_name}_WIN_{timestamp}_{snapshot_label}.json"
-        remote_snapshot_path = f"{snapshot_dir}\\{snapshot_filename}"
-
-        # Construct argument string safely
         arg_parts = [
             f'--app-folder "{app_folder}"',
-            f'--app-type {app_type}'
+            f'--app-type {app_type}',
+            f'--output {snapshot_filename}'
         ]
         if snapshot_label:
             arg_parts.append(f'--label {snapshot_label}')
-        arg_parts.append(f'--output {snapshot_filename}')
-
         arg_string = " ".join(arg_parts)
 
         ps_cmd = f"""
         Start-Process -FilePath '{remote_agent}' -ArgumentList '{arg_string}' -Wait -NoNewWindow
         """
 
-        print("🚀 Executing agent remotely...")
+        print("🚀 Executing agent remotely on Windows...")
         print("🧪 PowerShell Command:\n", ps_cmd)
 
         exec_result = session.run_ps(ps_cmd)
@@ -348,8 +358,8 @@ async def remote_collect(request: Request):
         print("STDOUT:", exec_result.std_out.decode())
         print("STDERR:", exec_result.std_err.decode())
 
-        # Poll for the file to appear
-        for attempt in range(30):  # 30s timeout
+        # Wait for snapshot file to appear
+        for _ in range(30):
             check_cmd = f"Test-Path '{remote_snapshot_path}'"
             poll_result = session.run_ps(check_cmd)
             if "True" in poll_result.std_out.decode():
@@ -359,20 +369,16 @@ async def remote_collect(request: Request):
         else:
             return JSONResponse(content={"error": "Snapshot file not found after waiting."}, status_code=500)
 
-        # Read and decode the file
+        # Read and base64-encode the snapshot file
         read_cmd = f"$b = Get-Content -Path '{remote_snapshot_path}' -Raw; [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($b))"
         read_result = session.run_ps(read_cmd)
-
         encoded_data = read_result.std_out.decode().strip()
+
         if not encoded_data or "Exception" in encoded_data:
             return JSONResponse(content={"error": "Failed to retrieve snapshot file content."}, status_code=500)
 
-        try:
-            decoded_bytes = base64.b64decode(encoded_data)
-        except Exception as decode_err:
-            print("❌ Base64 decode failed.")
-            return JSONResponse(content={"error": "Failed to decode base64 content."}, status_code=500)
-
+        # Decode and save to local file
+        decoded_bytes = base64.b64decode(encoded_data)
         local_file_path = SNAPSHOT_DIR / snapshot_filename
         with open(local_file_path, "wb") as f:
             f.write(decoded_bytes)
@@ -385,9 +391,73 @@ async def remote_collect(request: Request):
         }
 
     except Exception as e:
-        print("❌ FULL EXCEPTION in /remote_collect")
+        print("❌ FULL EXCEPTION in handle_windows")
         print(traceback.format_exc())
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+        
+# for remote collection Linux and Mac VMs        
+async def handle_ssh_based(vm_ip, username, password, app_folder, app_type, snapshot_label, snapshot_filename):
+    remote_agent_path = "/opt/enveye-agent/enveye-agent"  # Adjust if different
+    snapshot_dir = "/tmp/enveye"  # Or other temp directory
+    remote_snapshot_path = f"{snapshot_dir}/{snapshot_filename}"
+
+    arg_parts = [
+        f'--app-folder "{app_folder}"',
+        f'--app-type {app_type}',
+        f'--output {remote_snapshot_path}'
+    ]
+    if snapshot_label:
+        arg_parts.append(f'--label {snapshot_label}')
+    arg_string = " ".join(arg_parts)
+
+    try:
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(vm_ip, username=username, password=password, look_for_keys=False)
+
+        # Ensure output directory exists
+        client.exec_command(f"mkdir -p {snapshot_dir}")
+
+        # Run agent
+        full_command = f"{remote_agent_path} {arg_string}"
+        print(f"🚀 Executing on Linux/macOS: {full_command}")
+        stdin, stdout, stderr = client.exec_command(full_command)
+        stdout.channel.recv_exit_status()  # Wait for completion
+
+        # Check if file exists
+        for _ in range(30):
+            stdin, stdout, _ = client.exec_command(f"test -f {remote_snapshot_path} && echo EXISTS")
+            if "EXISTS" in stdout.read().decode():
+                print("📁 Snapshot file detected.")
+                break
+            time.sleep(1)
+        else:
+            return JSONResponse(content={"error": "Snapshot not found after waiting."}, status_code=500)
+
+        # Read and transfer file
+        sftp = client.open_sftp()
+        with sftp.open(remote_snapshot_path, 'rb') as remote_file:
+            file_data = remote_file.read()
+
+        local_path = SNAPSHOT_DIR / snapshot_filename
+        with open(local_path, 'wb') as f:
+            f.write(file_data)
+
+        print(f"✅ Snapshot pulled and saved to: {local_path}")
+        return {
+            "status": "success",
+            "message": f"Snapshot from {vm_ip} collected and uploaded!",
+            "vm_hostname": vm_ip
+        }
+
+    except Exception as e:
+        print(traceback.format_exc())
+        return JSONResponse(content={"error": f"SSH collection failed: {str(e)}"}, status_code=500)
+    finally:
+        client.close()
+
 
         
         
