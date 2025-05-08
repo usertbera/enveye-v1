@@ -1,3 +1,4 @@
+
 <p align="center">
   <img src="https://github.com/usertbera/enveye-mvp/raw/main/enveye-frontend/src/assets/logo_96x96.png" alt="EnvEye Logo" width="120" height="120"/>
 </p>
@@ -44,6 +45,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 ![image](https://github.com/user-attachments/assets/39905967-9c60-4c65-a49a-c7e895c78a04)
 
 ---
+
 ## 🛠️ EnvEye Architecture Diagram
 
 <p align="center">
@@ -51,6 +53,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 </p>
 
 ----
+
 ## 🏆 Why EnvEye Matters
 
 **EnvEye empowers IT support teams and developers to dramatically reduce Mean Time To Resolution (MTTR)** by automating the discovery of environment-related issues. Instead of manually inspecting configurations, services, DLLs, or logs, teams can rely on EnvEye’s intelligent comparison and AI-powered diagnostics.
@@ -67,6 +70,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 - Deployable in **Azure Functions**, container apps, or internal IT pipelines for scalable enterprise use.
 
 ---
+
 ## 🧆 Key Features
 
 - 💾 **Snapshot Collection**: Remote/manual VM snapshot capture.
@@ -105,37 +109,58 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 
 ---
 
-## 🌐 Local Setup Instructions
+## 🌐 Setup Instructions
+Clone the repository https://github.com/usertbera/enveye-v1
 
-### 👉 Frontend Setup
-```bash
-cd enveye-frontend
-npm install
-npm run build
-npm run preview
+### 👉 EnvEye Agent Creation
+- Go 1.16 or higher installed
+
+Inside enveye-agent folder run the build_all script
+
+macOS/Linux
+```
+chmod +x build-all.sh
+./build-all.sh
+```
+Windows (PowerShell)
+```
+.build-all.ps1
+```
+Once the script run successfully agents for windows/linux/darwin(mac) will be created in respective folder
+```
+dist/
+├── windows_amd64/enveye-agent.exe
+├── linux_amd64/enveye-agent
+├── darwin_amd64/enveye-agent
+├── darwin_arm64/enveye-agent
 ```
 
-**📍 Important:**  
-Update the backend IP address in `enveye-frontend/src/api.js`:
-```javascript
-export const API_BASE_URL = "http://<your-backend-ip>:8000";
-```
+
+
 
 ---
 
-### 👉 Backend Setup
-```bash
-cd enveye-backend
-pip install -r requirements.txt
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+### 👉 EnvEye Dashboard Setup
+For Windows:
 ```
+run start_all.bat
+```
+
+For Linux/macOS:
+```shell
+chmod +x start_all.sh
+.\start_all.sh
+```
+**Update config.json file:**
+  >provide backend_ip, agent pats in remote vm, ai vendor and model in config file
 
 **Environment Variable Required:**
-```bash
-export OPENAI_API_KEY=your-api-key-here  # Linux/Mac
-set OPENAI_API_KEY=your-api-key-here     # Windows
+create a .env file in root of the project (enveye-dashboard) and add api keys for the AI model being used
 ```
+  OPENAI_API_KEY //for open ai
+  GOOGLE_API_KEY //for google gemini
 
+```
 **Optional: Install OCR Dependencies**
 ```bash
 sudo apt install tesseract-ocr         # Linux
@@ -145,33 +170,27 @@ choco install tesseract                # Windows (via Chocolatey)
 
 ---
 
-### 👉 Collector Agent Setup (Optional)
-```bash
-cd collector
-python collector_agent.py --app-folder "C:\Program Files\YourApp" --app-type desktop --upload-url http://<backend-ip>:8000/upload_snapshot
-```
-
----
-
-## ⚙️ WinRM Setup for Remote Collection
+## ⚙️ Setup for Remote Collection
 
 To enable remote snapshot collection:
 
-1. Copy `collector_agent.exe` to the target VM (e.g., `C:\Tools\Collector`)
-2. On the VM, **run the following PowerShell script once**:
+1. Copy 'dist' folder which was generated during agent creation in remote VM (e.g., `C:\dist\..`), Make sure the path is provided correctly in config.json
+   **⚙️ Make the Binary Executable (Linux/macOS)**  
+```shell
+chmod +x enveye-agent
+```
+2. On the VM, **run the following script once**:
 
-```powershell
-# WinRMFixScript.PS1
-Write-Host "🔧 Configuring WinRM..." -ForegroundColor Cyan
-winrm quickconfig -q
-winrm set winrm/config/service '@{AllowUnencrypted="true"}'
-winrm set winrm/config/service/auth '@{Basic="true"}'
-New-NetFirewallRule -DisplayName "Allow WinRM (HTTP 5985)" -Name "AllowWinRM" -Protocol TCP -LocalPort 5985 -Action Allow
-Write-Host "
-🔎 Current Listeners:" -ForegroundColor Green
-winrm enumerate winrm/config/listener
-Write-Host "
-✅ WinRM Setup Completed Successfully!" -ForegroundColor Green
+For Windows:
+```
+run WinRMFixScript.ps1
+```
+
+
+For Linux/macOS:
+```shell
+chmod +x SSHFixScript.sh
+.\SSHFixScript.sh
 ```
 
 ---
@@ -179,9 +198,10 @@ Write-Host "
 ## 📂 Project Structure
 
 ```
-/enveye-frontend     # React frontend (Vite based)
-/enveye-backend      # FastAPI backend
-/collector           # Python agent for snapshot collection
+/enveye-dashboard
+  /enveye-frontend     # React frontend (Vite based)
+  /enveye-backend      # FastAPI backend
+/enveye-agent          # go agent for snapshot collection
 ```
 ---
 ### 🤖➕🧑‍🏫 Feedback-Driven AI (Human-in-the-Loop)
@@ -209,7 +229,6 @@ Every AI explanation can be flagged by the user as inaccurate, making the tool s
 
 ## 🌈 Future Enhancements
 
-- 🐧 Linux and macOS snapshot support.
 - 🔥 AI-prioritized diff summaries.
 - 📦 Batch snapshot comparison support.
 - 🪵 Smart log scanning (pattern detection, timestamps, etc.)
