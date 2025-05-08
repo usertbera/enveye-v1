@@ -1,0 +1,255 @@
+{
+  "application_name": "Edge",
+  "application_type": "desktop",
+  "environment_context": {
+    "app_folder_files": {
+      "Application\\136.0.3240.50\\AdSelectionAttestationsPreloaded\\manifest.json": {
+        "modified": "2025-05-01T02:35:22-04:00",
+        "sha256": "e92ad2a1a517ec4c6db1538513b0a529966249182b3a571fab3941ea3eff5ff0",
+        "size_bytes": 128
+      },
+      "Application\\136.0.3240.50\\BHO\\ie_to_edge_bho.dll": {
+        "modified": "2025-05-01T11:41:40-04:00",
+        "sha256": "a823aea819e4eed807bffb2f18f35ac7342d248c9e5890166aa72dcbcd17524f",
+        "size_bytes": 459864
+      },
+      "Application\\136.0.3240.50\\BHO\\ie_to_edge_bho_64.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "e23101023979851f59992367540230f6f8607869d5448e382a9d151001a6d635",
+        "size_bytes": 569896
+      },
+      "Application\\136.0.3240.50\\EBWebView\\x64\\EmbeddedBrowserWebView.dll": {
+        "modified": "2025-05-01T11:41:40-04:00",
+        "sha256": "0efa3cb422f5183ea56ecbfe6f92ad597b543eda964bfed18ba4ead058973d7b",
+        "size_bytes": 5445672
+      },
+      "Application\\136.0.3240.50\\EBWebView\\x86\\EmbeddedBrowserWebView.dll": {
+        "modified": "2025-05-01T11:41:41-04:00",
+        "sha256": "e83fe33329b486564491c2b75c2937f8d3c714b1a8c82970e38d1fb066b5b1fd",
+        "size_bytes": 4262952
+      },
+      "Application\\136.0.3240.50\\Extensions\\external_extensions.json": {
+        "modified": "2025-05-01T02:35:22-04:00",
+        "sha256": "a68cafd7d78d5c671c2560656653f2a4d83ab66d87a8728356a88fb1f477b3e6",
+        "size_bytes": 99
+      },
+      "Application\\136.0.3240.50\\MEIPreload\\manifest.json": {
+        "modified": "2025-05-01T02:35:22-04:00",
+        "sha256": "44844cf3dde6e80087ae0e6bf0d9326d7ef7d23326d24ac83af0850be26923d2",
+        "size_bytes": 238
+      },
+      "Application\\136.0.3240.50\\PdfPreview\\PdfPreviewHandler.dll": {
+        "modified": "2025-05-01T11:41:40-04:00",
+        "sha256": "372451a1aafeb2180784393530cd3f09f8076af707a4e74ca1e7fd1363e678dd",
+        "size_bytes": 238120
+      },
+      "Application\\136.0.3240.50\\Trust Protection Lists\\manifest.json": {
+        "modified": "2025-05-01T02:35:22-04:00",
+        "sha256": "7f8c92b4e9da2afa5a089e37797036d18e61e4f02a4885b7887c0b98d464259f",
+        "size_bytes": 132
+      },
+      "Application\\136.0.3240.50\\WidevineCdm\\_platform_specific\\win_x64\\widevinecdm.dll": {
+        "modified": "2025-05-01T11:43:17-04:00",
+        "sha256": "cbfd7d837aef3388fe63c2b41a0f24427d2ccc94d4ddc8344a4e2f0e03516b14",
+        "size_bytes": 19470120
+      },
+      "Application\\136.0.3240.50\\WidevineCdm\\manifest.json": {
+        "modified": "2025-05-01T02:35:22-04:00",
+        "sha256": "005a2386e5da2e6a5975f1180fe9b325da57c61c0b4f1b853b8bcf66ec98f0a0",
+        "size_bytes": 1003
+      },
+      "Application\\136.0.3240.50\\concrt140.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "83821052f5c35ce2d49e285bcca64474c9655505270070dc55113a532042441d",
+        "size_bytes": 332976
+      },
+      "Application\\136.0.3240.50\\d3dcompiler_47.dll": {
+        "modified": "2025-05-01T11:40:21-04:00",
+        "sha256": "d5eef611ae0625b6c79548f68847132b6baa110ac7aeda5d7e399b9ba2a74bf6",
+        "size_bytes": 4927144
+      },
+      "Application\\136.0.3240.50\\dual_engine_adapter_x64.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "0ccb92a4d055f8da76be2a49b5d1ff630273ab0b98085f37ed6a70875bb642db",
+        "size_bytes": 3851920
+      },
+      "Application\\136.0.3240.50\\dxcompiler.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "60f919e146cf6180eda09fa82330201ba6e8da0aa9e8524fe65e2d3812a2b90e",
+        "size_bytes": 20532776
+      },
+      "Application\\136.0.3240.50\\dxil.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "a5dde21822d8599417c4be8e41e6eb20107c456ed6127c49be4eb96855c368a0",
+        "size_bytes": 1513072
+      },
+      "Application\\136.0.3240.50\\eventlog_provider.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "d8e43c252dc0e8f5429eb0f43d285e3fec104a96a3596868eaeb28da6fd0a3a3",
+        "size_bytes": 16448
+      },
+      "Application\\136.0.3240.50\\ffmpeg.dll": {
+        "modified": "2025-05-01T11:41:41-04:00",
+        "sha256": "b1d8c085f05646e3c9027d9914040d907ee1719100948caee38de89815332629",
+        "size_bytes": 3207224
+      },
+      "Application\\136.0.3240.50\\learning_tools.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "231008e780c640fd3835190a3ab7e035e8b6d35356ca76de5c6fd18bf35189f9",
+        "size_bytes": 1226312
+      },
+      "Application\\136.0.3240.50\\libEGL.dll": {
+        "modified": "2025-05-01T11:43:48-04:00",
+        "sha256": "ab67eab7cecb8ffdaf829783210f0f500c19084441dddeb83f6427e4d26f4bfc",
+        "size_bytes": 484512
+      },
+      "Application\\136.0.3240.50\\libGLESv2.dll": {
+        "modified": "2025-05-01T11:43:06-04:00",
+        "sha256": "3041d776d7f0ae83f397fd4a35245626c8109bcad9060d3379aaaa634a222040",
+        "size_bytes": 6906520
+      },
+      "Application\\136.0.3240.50\\microsoft_shell_integration.dll": {
+        "modified": "2025-05-01T11:41:40-04:00",
+        "sha256": "2270351a991c95f40c77f2a9477676b2de44512392cea55cd277502a61d6350e",
+        "size_bytes": 440888
+      },
+      "Application\\136.0.3240.50\\mip_core.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "c54e6ba92f96e541af2e90c0b1f3710086d4408976d68eafdb516ccfa60eb167",
+        "size_bytes": 5435432
+      },
+      "Application\\136.0.3240.50\\mip_protection_sdk.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "75504851c522d5ab4f2f2130bb9460b3a31f5397591b525d853f7402e8f2b517",
+        "size_bytes": 2501672
+      },
+      "Application\\136.0.3240.50\\msedge.dll": {
+        "modified": "2025-05-01T11:41:41-04:00",
+        "sha256": "90090564a0104064ceef7e15a660a5acf5d079951c9ae3d2262d4a77bfd5985e",
+        "size_bytes": 278071336
+      },
+      "Application\\136.0.3240.50\\msedge_elf.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "449ebd554ce06a9675ccde76841a8f98d70b98a7f4cf30bf6a83c94f859c0612",
+        "size_bytes": 3725352
+      },
+      "Application\\136.0.3240.50\\msedge_wer.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "df2a58c2198e663e36f08981bb0be0dd54c99116e762a922d574303105ec10f1",
+        "size_bytes": 122432
+      },
+      "Application\\136.0.3240.50\\mspdf.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "df396deed8f8fe0271f051b6e0fa8d43cfaced4f3d7870118c17db238fb48a6c",
+        "size_bytes": 18240040
+      },
+      "Application\\136.0.3240.50\\msvcp140.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "b12ec7599a3bb9239c37fbaf0462ae6859bddfcdb2f5b29ff11b1590042e8357",
+        "size_bytes": 585864
+      },
+      "Application\\136.0.3240.50\\msvcp140_codecvt_ids.dll": {
+        "modified": "2025-05-01T11:40:21-04:00",
+        "sha256": "37fcb9344acad4f78cf8fc7b64695201dc33ff11dc857f1dd1d9ddaef071ab76",
+        "size_bytes": 42144
+      },
+      "Application\\136.0.3240.50\\oneauth.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "7da06e94777ff1c16673d8d6c9824a3e4841e16273dd52d81a9a6561da8a0d43",
+        "size_bytes": 5560872
+      },
+      "Application\\136.0.3240.50\\oneds.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "6ed208cd64806803cd3c4fe2b38774a29cf30b6ded32fee40fbf61681f33c38d",
+        "size_bytes": 3162184
+      },
+      "Application\\136.0.3240.50\\onnxruntime.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "5038d56b6254f3010dbe4541c30aa61d592747e5d6715d1734e960952ea2bb06",
+        "size_bytes": 2879568
+      },
+      "Application\\136.0.3240.50\\onramp.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "d165c1925cb3b07bac4c210a97b35dcb69184c80455bae298579763f9132f305",
+        "size_bytes": 449592
+      },
+      "Application\\136.0.3240.50\\prefs_enclave_x64.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "516e7c4c880cc483a8a54528f29c3e557bfc97cf3f77a73f020b9cb9451f419d",
+        "size_bytes": 116416
+      },
+      "Application\\136.0.3240.50\\telclient.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "35b84155a529c619aba44dac121f7a18f512d68f68ab21c869aaf3dd8dcb7d0e",
+        "size_bytes": 2299944
+      },
+      "Application\\136.0.3240.50\\vccorlib140.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "4acba475f67dbcb3459ac13f400e43e4262968988eff5521c44f18dd3356390b",
+        "size_bytes": 362112
+      },
+      "Application\\136.0.3240.50\\vcruntime140.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "7fb70fb4996f539b43939916c082983f70da2892da71c4b632d1f0a8c7a5a8ad",
+        "size_bytes": 130704
+      },
+      "Application\\136.0.3240.50\\vcruntime140_1.dll": {
+        "modified": "2025-05-01T11:40:38-04:00",
+        "sha256": "8f0908a405e18ca1c27290f10eb9aae7a67cd39fda95e69bada64a3ab52347fd",
+        "size_bytes": 60064
+      },
+      "Application\\136.0.3240.50\\vk_swiftshader.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "83f40f6954b60f550e19a61c072d92b2248d70f06e035aa0e5e5484986849322",
+        "size_bytes": 4818000
+      },
+      "Application\\136.0.3240.50\\vk_swiftshader_icd.json": {
+        "modified": "2025-05-01T02:35:22-04:00",
+        "sha256": "32d83ff113fef532a9f97e0d2831f8656628ab1c99e9060f0332b1532839afd9",
+        "size_bytes": 106
+      },
+      "Application\\136.0.3240.50\\vulkan-1.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "3b6eff04223c6c42ffaad8f773831876df051d56d5a4a6142801737d58788e02",
+        "size_bytes": 879696
+      },
+      "Application\\136.0.3240.50\\wdag.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "0e9d744cb7823ccfa14bbae844014b6740a6262a962f552e8132a44d2a906d26",
+        "size_bytes": 234064
+      },
+      "Application\\136.0.3240.50\\webview2_integration.dll": {
+        "modified": "2025-05-01T11:41:29-04:00",
+        "sha256": "dc88c401e5570c53395007314a006129977cb469e9c78894d99dc4ecc4369149",
+        "size_bytes": 32296
+      },
+      "Application\\136.0.3240.50\\wns_push_client.dll": {
+        "modified": "2025-05-01T11:41:40-04:00",
+        "sha256": "de15f09af09e962505c734e841153fe452b3d660d1c9e84767621ae530246b04",
+        "size_bytes": 538688
+      },
+      "Application\\msedge.VisualElementsManifest.xml": {
+        "modified": "2025-05-02T13:03:34-04:00",
+        "sha256": "f7e63f4ba5d3e94862f151be10acd3e3131041df5137ca45a6cc02b6a8cd32bf",
+        "size_bytes": 441
+      }
+    },
+    "critical_environment_variables": {
+      "APP_ENV": "Not Set",
+      "ENVIRONMENT": "Not Set"
+    },
+    "os_info": {
+      "architecture": "amd64",
+      "name": "windows"
+    },
+    "required_services_status": {
+      "AppHostSvc": "Running",
+      "MSSQL$SQLEXPRESS": "error: exit status 1",
+      "MongoDB": "error: exit status 1",
+      "RabbitMQ": "error: exit status 1",
+      "W3SVC": "Running",
+      "WinRM": "Running"
+    }
+  },
+  "timestamp": "2025-05-07T13:29:38-04:00"
+}
