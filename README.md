@@ -49,7 +49,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 ## 🛠️ EnvEye Architecture Diagram
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6386b028-fc17-45d5-8e9c-ac0748c1a6db" alt="EnvEye Architecture Diagram" width="600"/>
+  <img src="https://github.com/user-attachments/assets/bbfedc26-3234-4a5a-99fb-fd0a4ee0eeed" alt="EnvEye Architecture Diagram" width="600"/>
 </p>
 
 ----
