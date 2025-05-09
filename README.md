@@ -233,7 +233,6 @@ Every AI explanation can be flagged by the user as inaccurate, making the tool s
 
 ## ⚡ Limitations
 
-- Currently supports only **Windows VMs**.
 - Large snapshots (>10MB) may slightly slow comparisons.
 - AI diagnosis is best-effort — manual validation recommended.
 - Log path analysis requires backend to have read access.
@@ -256,7 +255,6 @@ As infrastructure continues to evolve toward the cloud, EnvEye is designed to ev
 | Goal                             | Description |
 |----------------------------------|-------------|
 | ☁️ **Cloud VM Support**         | Support for snapshot collection from **AWS EC2**, **Azure VMs**, and **GCP Compute Engine** — using native APIs (SSM, Azure RunCommand, etc.) |
-| 🐧 **Linux-Based Snapshot Agents** | Extend the agent to support **Linux VMs** via SSH and shell collectors |
 | 📦 **Docker & Kubernetes Snapshots** | Capture and compare environment state inside **containers** and **K8s pods** — such as env vars, mounts, and sidecar configs |
 | ⚙️ **Cloud Log Integration**     | Fetch relevant logs directly from **CloudWatch**, **Azure Monitor**, or **GCP Logging** when a path or tag is provided |
 | 🔁 **GitOps & CI/CD Awareness** | Compare snapshots against known-good state from a GitOps repo or before/after deployment scripts |
