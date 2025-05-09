@@ -40,9 +40,10 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 
 ## 📸 Screenshots
 
-![image](https://github.com/user-attachments/assets/eef63ec5-aa2c-41a0-8665-15e77cf7264a)
-![image](https://github.com/user-attachments/assets/c6b2a7cf-9d54-4c9b-b900-de3bc46dd945)
-![image](https://github.com/user-attachments/assets/39905967-9c60-4c65-a49a-c7e895c78a04)
+![image](https://github.com/user-attachments/assets/e45aeff2-977f-4a53-bd38-d4eaf9690b49)
+![image](https://github.com/user-attachments/assets/035ce254-a1eb-40ea-b1fc-2024a1e3e596)
+![image](https://github.com/user-attachments/assets/1274751d-ce3d-465a-8a1d-d102c94d7459)
+![image](https://github.com/user-attachments/assets/66d9ecd1-385c-48bd-995a-f70ec748f78c)
 
 ---
 
