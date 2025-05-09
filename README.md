@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/usertbera/enveye-mvp"><img alt="Built With" src="https://img.shields.io/badge/Built%20with-React%20%7C%20FastAPI%20%7C%20OpenAI-blue?style=for-the-badge"/></a>
+  <a href="https://github.com/usertbera/enveye-mvp"><img alt="Built With" src="https://img.shields.io/badge/Built%20with-React%20%7C%20FastAPI%20%7C%20AI-blue?style=for-the-badge"/></a>
   <a href="https://github.com/usertbera/enveye-mvp/blob/main/LICENSE">
   <img alt="License" src="https://img.shields.io/github/license/usertbera/enveye-mvp?style=for-the-badge&cacheSeconds=60"/>
 </a>
@@ -24,7 +24,7 @@
 
 **EnvEye** is a smart debugging assistant for IT environments.  
 It compares snapshots of system states (e.g., two VMs) and highlights key differences.  
-Powered by **OpenAI**, it explains issues and suggests fixes instantly.
+Powered by popular AI models, it explains issues and suggests fixes instantly.
 
 Built for developers, DevOps, and IT support teams — to accelerate troubleshooting and root cause analysis.
 
@@ -49,7 +49,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 ## 🛠️ EnvEye Architecture Diagram
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6386b028-fc17-45d5-8e9c-ac0748c1a6db" alt="EnvEye Architecture Diagram" width="600"/>
+  <img src="https://github.com/user-attachments/assets/bbfedc26-3234-4a5a-99fb-fd0a4ee0eeed" alt="EnvEye Architecture Diagram" width="600"/>
 </p>
 
 ----
@@ -61,7 +61,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 ### 💡 Real-World Use Case
 
 > A support engineer receives a critical bug report from staging: “It worked yesterday.”  
-> Using EnvEye, they instantly compare snapshots from today and yesterday, OCR a provided error screenshot, and get GPT-generated insights into the root cause — saving hours of guesswork and back-and-forth debugging.
+> Using EnvEye, they instantly compare snapshots from today and yesterday, OCR a provided error screenshot, and get AI-generated insights into the root cause — saving hours of guesswork and back-and-forth debugging.
 
 ### ✅ Aligned with Microsoft AI Ecosystem
 
@@ -75,7 +75,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 
 - 💾 **Snapshot Collection**: Remote/manual VM snapshot capture.
 - 🔍 **DeepDiff Comparison**: Detects changes across OS, DLLs, services, configs.
-- 🧠 **AI-Powered Analysis**: Smart diagnosis using GPT.
+- 🧠 **AI-Powered Analysis**: Smart diagnosis using popular AI models.
 - 🖼️ **Screenshot Debugging**: Upload an error screenshot – OCR extracts the message!
 - 📁 **Log Path Support**: Mention a backend-accessible log file path for full AI context.
 - 📋 **Clean & Friendly UI**: View, upload, download snapshots effortlessly.
@@ -89,9 +89,9 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 | ----------- | ------------------------------------- |
 | Frontend    | React + Vite + TailwindCSS            |
 | Backend     | FastAPI (Python)                      |
-| AI Model    | OpenAI GPT                 |
+| AI Model    | OpenAI/Gemini/Perplexity                |
 | OCR Engine  | Tesseract OCR (via pytesseract)       |
-| Collector   | Python Agent using WinRM              |
+| Collector   | GO Agent using WinRM/SSH              |
 | Diff Engine | DeepDiff (Python)                     |
 
 ---
@@ -104,7 +104,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
    - Paste an error message
    - Upload a screenshot (auto OCR)
    - Or provide a **log file path** accessible to the backend
-4. 🧠 **Request AI Help**: All inputs are sent to GPT for analysis.
+4. 🧠 **Request AI Help**: All inputs are sent to AI models for analysis.
 5. 🛠️ **Get Solutions**: Receive probable causes and intelligent suggestions.
 
 ---
@@ -152,7 +152,20 @@ chmod +x start_all.sh
 .\start_all.sh
 ```
 **Update config.json file:**
-  >provide backend_ip, agent pats in remote vm, ai vendor and model in config file
+```json
+{
+  "backend_ip": "http:localhost:8000",
+  "agent_paths": {
+    "windows": "C:\\dist\\windows_amd64\\enveye-agent.exe",
+    "linux": "/home/dist/linux_amd64/enveye-agent",
+    "macos": "/Users/yourname/darwin_amd64/enveye-agent"
+  },
+  "ai": {
+    "vendor": "openai",
+    "model": "gpt-4"            
+  }
+}
+```
 
 **Environment Variable Required:**
 create a .env file in root of the project (enveye-dashboard) and add api keys for the AI model being used
@@ -220,7 +233,6 @@ Every AI explanation can be flagged by the user as inaccurate, making the tool s
 
 ## ⚡ Limitations
 
-- Currently supports only **Windows VMs**.
 - Large snapshots (>10MB) may slightly slow comparisons.
 - AI diagnosis is best-effort — manual validation recommended.
 - Log path analysis requires backend to have read access.
@@ -243,7 +255,6 @@ As infrastructure continues to evolve toward the cloud, EnvEye is designed to ev
 | Goal                             | Description |
 |----------------------------------|-------------|
 | ☁️ **Cloud VM Support**         | Support for snapshot collection from **AWS EC2**, **Azure VMs**, and **GCP Compute Engine** — using native APIs (SSM, Azure RunCommand, etc.) |
-| 🐧 **Linux-Based Snapshot Agents** | Extend the agent to support **Linux VMs** via SSH and shell collectors |
 | 📦 **Docker & Kubernetes Snapshots** | Capture and compare environment state inside **containers** and **K8s pods** — such as env vars, mounts, and sidecar configs |
 | ⚙️ **Cloud Log Integration**     | Fetch relevant logs directly from **CloudWatch**, **Azure Monitor**, or **GCP Logging** when a path or tag is provided |
 | 🔁 **GitOps & CI/CD Awareness** | Compare snapshots against known-good state from a GitOps repo or before/after deployment scripts |
@@ -260,7 +271,7 @@ This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for
 
 ## 🙏 Acknowledgements
 
-- 🧠 OpenAI 
+- 🧠 OpenAI, Google, Perplexity 
 - ⚡ DeepDiff for intelligent diffing
 - 🧾 Tesseract OCR
 - ❤️ Open-source community inspirations
