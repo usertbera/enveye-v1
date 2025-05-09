@@ -520,6 +520,21 @@ async def ocr_image(payload: dict = Body(...)):
     except Exception as e:
         print("❌ OCR error:", e)
         return JSONResponse(status_code=500, content={"error": "OCR processing failed"})
+        
+        
+@app.post("/read_log")
+async def read_log_endpoint(payload: dict = Body(...)):
+    path = payload.get("path")
+    if not path:
+        return JSONResponse(status_code=400, content={"error": "No log path provided"})
+
+    try:
+        log_content = read_log_file_safely(path)
+        return {"content": log_content}
+    except Exception as e:
+        print(f"❌ Error reading log file: {e}")
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
 
         
 # --- Utilities ---

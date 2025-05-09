@@ -1,4 +1,3 @@
-// DiagnosisPanel.js
 import React, { forwardRef } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "./api";
@@ -21,61 +20,81 @@ const DiagnosisPanel = forwardRef(({
   setLogPath
 }, ref) => {
   return (
-    <div className="flex-1 bg-white rounded-lg shadow-lg p-4 flex flex-col gap-4">
+    <div className="flex-1 bg-white rounded-lg shadow-lg p-6 flex flex-col gap-6">
       <h3 className="text-xl font-semibold">🧠 Start AI Diagnosis</h3>
 
-      <textarea
-        placeholder="Optional: Error message"
-        className="w-full px-4 py-2 border rounded"
-        value={errorMsg}
-        onChange={(e) => setErrorMsg(e.target.value)}
-      />
+      {/* Error Message & Screenshot Upload */}
+      <div>
+        <label htmlFor="error-message" className="block text-sm font-medium text-gray-700 mb-1">
+          Optional Error Message
+        </label>
+        <textarea
+          id="error-message"
+          placeholder="Paste a relevant error message..."
+          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring"
+          value={errorMsg}
+          onChange={(e) => setErrorMsg(e.target.value)}
+        />
 
-      <label
-        htmlFor="screenshot-upload"
-        className="bg-purple-600 text-white px-2 py-1 rounded cursor-pointer text-lg"
-        title="Upload Screenshot"
-      >
-        + Upload Screenshot
-      </label>
-      <input
-        id="screenshot-upload"
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-      {errorScreenshot && (
-        <>
-          <p className="text-xs text-gray-500 mt-1">✅ Screenshot uploaded</p>
-          <div className="mb-4">
+        <div className="flex items-center mt-2 gap-2">
+          <label
+            htmlFor="screenshot-upload"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded cursor-pointer text-sm"
+            title="Upload Screenshot"
+          >
+            Upload Screenshot
+          </label>
+          <input
+            id="screenshot-upload"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+          {errorScreenshot && (
+            <span className="text-xs text-green-600">✅ Screenshot uploaded</span>
+          )}
+        </div>
+
+        {errorScreenshot && (
+          <div className="mt-3">
             <img src={errorScreenshot} alt="Screenshot preview" className="max-h-48 rounded shadow" />
           </div>
-        </>
-      )}
+        )}
+      </div>
 
-      <input
-        type="text"
-        placeholder="Optional: Enter log file path"
-        className="w-full px-4 py-2 border rounded text-sm"
-        value={logPath}
-        onChange={(e) => setLogPath(e.target.value)}
-      />
+      {/* Log File Path */}
+      <div>
+        <label htmlFor="log-path" className="block text-sm font-medium text-gray-700 mb-1">
+          Optional Log File Path
+        </label>
+        <input
+          id="log-path"
+          type="text"
+          placeholder="Enter log file path"
+          className="w-full px-4 py-2 border rounded text-sm focus:outline-none focus:ring"
+          value={logPath}
+          onChange={(e) => setLogPath(e.target.value)}
+        />
+      </div>
 
+      {/* Start Diagnosis Button */}
       <button
         onClick={startDiagnosis}
         disabled={waitingDiagnosis}
-        className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
+        className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
       >
         {waitingDiagnosis ? "🔍 Starting..." : "Start AI Diagnosis"}
       </button>
 
+      {/* Diagnosis Result and Chat */}
       {diagnosisAI && (
-        <div ref={ref} id="ai-diagnosis" className="bg-green-100 text-gray-900 p-4 mt-4 rounded shadow">
+        <div ref={ref} id="ai-diagnosis" className="bg-green-100 text-gray-900 p-4 rounded shadow mt-4">
           <h3 className="text-lg font-semibold mb-2">🧠 AI Diagnosis</h3>
           <p className="whitespace-pre-line mb-4">{diagnosisAI}</p>
 
-          <div className="mt-4 border-t pt-4">
+          {/* Follow-up Chat */}
+          <div className="border-t pt-4">
             <h4 className="text-md font-bold mb-2">💬 Continue AI Chat</h4>
             <div className="space-y-2 max-h-64 overflow-y-auto mb-4 p-2 bg-gray-50 rounded border">
               {chatHistory.map((msg, idx) => (
@@ -91,18 +110,19 @@ const DiagnosisPanel = forwardRef(({
                 value={followupText}
                 onChange={(e) => setFollowupText(e.target.value)}
                 placeholder="Ask a follow-up..."
-                className="flex-1 px-4 py-2 border rounded"
+                className="flex-1 px-4 py-2 border rounded focus:outline-none focus:ring"
               />
               <button
                 onClick={sendFollowup}
                 disabled={chatLoading}
-                className="bg-blue-600 text-white px-4 py-2 rounded"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
               >
                 {chatLoading ? "Sending..." : "Send"}
               </button>
             </div>
 
-            <div className="flex justify-between mt-4">
+            {/* Session Actions */}
+            <div className="flex justify-between mt-4 text-sm">
               <button
                 onClick={async () => {
                   try {
@@ -113,7 +133,7 @@ const DiagnosisPanel = forwardRef(({
                     console.error(err);
                   }
                 }}
-                className="text-sm text-green-700 underline hover:text-green-900"
+                className="text-green-700 underline hover:text-green-900"
               >
                 ✅ Mark as Resolved
               </button>
@@ -131,7 +151,7 @@ const DiagnosisPanel = forwardRef(({
                     console.error(err);
                   }
                 }}
-                className="text-sm text-red-600 underline hover:text-red-800"
+                className="text-red-600 underline hover:text-red-800"
               >
                 ⚠️ Flag as Inaccurate
               </button>
