@@ -504,6 +504,22 @@ async def flag_feedback(payload: dict = Body(...)):
     except Exception as e:
         print("Feedback error:", e)
         return {"error": str(e)}
+        
+@app.post("/ocr")
+async def ocr_image(payload: dict = Body(...)):
+    base64_image = payload.get("base64_image")
+    if not base64_image:
+        return JSONResponse(status_code=400, content={"error": "No image provided"})
+
+    try:
+        image_data = base64.b64decode(base64_image.split(",")[-1])
+        image = Image.open(io.BytesIO(image_data))
+        raw_text = pytesseract.image_to_string(image)
+        cleaned_text = clean_ocr_text(raw_text)
+        return {"text": cleaned_text}
+    except Exception as e:
+        print("❌ OCR error:", e)
+        return JSONResponse(status_code=500, content={"error": "OCR processing failed"})
 
         
 # --- Utilities ---
