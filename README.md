@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/usertbera/enveye-mvp"><img alt="Built With" src="https://img.shields.io/badge/Built%20with-React%20%7C%20FastAPI%20%7C%20OpenAI-blue?style=for-the-badge"/></a>
+  <a href="https://github.com/usertbera/enveye-mvp"><img alt="Built With" src="https://img.shields.io/badge/Built%20with-React%20%7C%20FastAPI%20%7C%20AI-blue?style=for-the-badge"/></a>
   <a href="https://github.com/usertbera/enveye-mvp/blob/main/LICENSE">
   <img alt="License" src="https://img.shields.io/github/license/usertbera/enveye-mvp?style=for-the-badge&cacheSeconds=60"/>
 </a>
@@ -61,7 +61,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 ### 💡 Real-World Use Case
 
 > A support engineer receives a critical bug report from staging: “It worked yesterday.”  
-> Using EnvEye, they instantly compare snapshots from today and yesterday, OCR a provided error screenshot, and get GPT-generated insights into the root cause — saving hours of guesswork and back-and-forth debugging.
+> Using EnvEye, they instantly compare snapshots from today and yesterday, OCR a provided error screenshot, and get AI-generated insights into the root cause — saving hours of guesswork and back-and-forth debugging.
 
 ### ✅ Aligned with Microsoft AI Ecosystem
 
@@ -75,7 +75,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 
 - 💾 **Snapshot Collection**: Remote/manual VM snapshot capture.
 - 🔍 **DeepDiff Comparison**: Detects changes across OS, DLLs, services, configs.
-- 🧠 **AI-Powered Analysis**: Smart diagnosis using GPT.
+- 🧠 **AI-Powered Analysis**: Smart diagnosis using popular AI models.
 - 🖼️ **Screenshot Debugging**: Upload an error screenshot – OCR extracts the message!
 - 📁 **Log Path Support**: Mention a backend-accessible log file path for full AI context.
 - 📋 **Clean & Friendly UI**: View, upload, download snapshots effortlessly.
@@ -104,7 +104,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
    - Paste an error message
    - Upload a screenshot (auto OCR)
    - Or provide a **log file path** accessible to the backend
-4. 🧠 **Request AI Help**: All inputs are sent to GPT for analysis.
+4. 🧠 **Request AI Help**: All inputs are sent to AI models for analysis.
 5. 🛠️ **Get Solutions**: Receive probable causes and intelligent suggestions.
 
 ---
