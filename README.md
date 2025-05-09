@@ -24,7 +24,7 @@
 
 **EnvEye** is a smart debugging assistant for IT environments.  
 It compares snapshots of system states (e.g., two VMs) and highlights key differences.  
-Powered by **OpenAI**, it explains issues and suggests fixes instantly.
+Powered by popular AI models, it explains issues and suggests fixes instantly.
 
 Built for developers, DevOps, and IT support teams — to accelerate troubleshooting and root cause analysis.
 
@@ -89,9 +89,9 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 | ----------- | ------------------------------------- |
 | Frontend    | React + Vite + TailwindCSS            |
 | Backend     | FastAPI (Python)                      |
-| AI Model    | OpenAI GPT                 |
+| AI Model    | OpenAI/Gemini/Perplexity                |
 | OCR Engine  | Tesseract OCR (via pytesseract)       |
-| Collector   | Python Agent using WinRM              |
+| Collector   | GO Agent using WinRM/SSH              |
 | Diff Engine | DeepDiff (Python)                     |
 
 ---
@@ -271,7 +271,7 @@ This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for
 
 ## 🙏 Acknowledgements
 
-- 🧠 OpenAI 
+- 🧠 OpenAI, Google, Perplexity 
 - ⚡ DeepDiff for intelligent diffing
 - 🧾 Tesseract OCR
 - ❤️ Open-source community inspirations
