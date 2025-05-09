@@ -152,7 +152,20 @@ chmod +x start_all.sh
 .\start_all.sh
 ```
 **Update config.json file:**
-  >provide backend_ip, agent pats in remote vm, ai vendor and model in config file
+```json
+{
+  "backend_ip": "http:localhost:8000",
+  "agent_paths": {
+    "windows": "C:\\dist\\windows_amd64\\enveye-agent.exe",
+    "linux": "/home/dist/linux_amd64/enveye-agent",
+    "macos": "/Users/yourname/darwin_amd64/enveye-agent"
+  },
+  "ai": {
+    "vendor": "openai",
+    "model": "gpt-4"            
+  }
+}
+```
 
 **Environment Variable Required:**
 create a .env file in root of the project (enveye-dashboard) and add api keys for the AI model being used
