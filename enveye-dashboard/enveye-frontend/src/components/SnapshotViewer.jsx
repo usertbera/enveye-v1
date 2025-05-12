@@ -17,6 +17,15 @@ function SnapshotViewer() {
 
     fetchSnapshots();
   }, []);
+  
+  const handleView = (snapshot) => {
+	  const viewUrl = `${API_BASE_URL}/snapshots/${snapshot}`;
+	  window.open(
+		viewUrl,
+		'_blank',
+		'width=800,height=600,resizable=yes,scrollbars=yes'
+	  );
+  };
 
   const handleDownload = (snapshot) => {
     const downloadUrl = `${API_BASE_URL}/snapshots/${snapshot}`;
@@ -45,6 +54,12 @@ function SnapshotViewer() {
           <li key={snapshot} className="flex justify-between items-center">
             <span>{snapshot}</span>
             <div className="space-x-4">
+			  <button
+				  onClick={() => handleView(snapshot)}
+				  className="text-green-600 hover:underline"
+				>
+				  View
+			  </button>
               <button
                 onClick={() => handleDownload(snapshot)}
                 className="text-blue-600 hover:underline"
