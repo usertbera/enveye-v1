@@ -28,6 +28,15 @@ function SnapshotViewer() {
     document.body.removeChild(link);
   };
 
+  const handleDelete = async (snapshot) => {
+    try {
+      await axios.delete(`${API_BASE_URL}/delete_snapshot/${snapshot}`);
+      setSnapshots((prev) => prev.filter((s) => s !== snapshot));
+    } catch (error) {
+      console.error('Error deleting snapshot:', error);
+    }
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md mt-8">
       <h2 className="text-2xl font-bold mb-4 text-center">📦 Available Snapshots</h2>
@@ -35,12 +44,20 @@ function SnapshotViewer() {
         {snapshots.map((snapshot) => (
           <li key={snapshot} className="flex justify-between items-center">
             <span>{snapshot}</span>
-            <button
-              onClick={() => handleDownload(snapshot)}
-              className="text-blue-600 hover:underline"
-            >
-              Download
-            </button>
+            <div className="space-x-4">
+              <button
+                onClick={() => handleDownload(snapshot)}
+                className="text-blue-600 hover:underline"
+              >
+                Download
+              </button>
+              <button
+                onClick={() => handleDelete(snapshot)}
+                className="text-red-600 hover:underline"
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>

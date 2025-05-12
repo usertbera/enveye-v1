@@ -50,8 +50,9 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="../enveye-frontend/dist"), name="static")
 
 # --- Setup Snapshot Directory ---
+username = os.getlogin()
 BASE_DIR = Path(__file__).resolve().parent
-SNAPSHOT_DIR = BASE_DIR / "snapshots"
+SNAPSHOT_DIR = BASE_DIR / "snapshots"/username
 SNAPSHOT_DIR.mkdir(exist_ok=True)
 
 # --- Mount Snapshots as Static ---
@@ -493,6 +494,18 @@ async def download_snapshot(filename: str):
         return FileResponse(file_path, filename=filename, media_type='application/json')
     else:
         return JSONResponse(content={"error": "File not found."}, status_code=404)
+        
+@app.delete("/delete_snapshot/{filename}")
+async def delete_snapshot(filename: str):
+    file_path = SNAPSHOT_DIR / filename
+    try:
+        if file_path.exists():
+            file_path.unlink()
+            return {"message": f"Snapshot '{filename}' deleted successfully."}
+        else:
+            return JSONResponse(content={"error": "File not found."}, status_code=404)
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
         
 @app.post("/flag")
 async def flag_feedback(payload: dict = Body(...)):
