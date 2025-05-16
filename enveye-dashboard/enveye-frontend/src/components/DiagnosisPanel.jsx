@@ -104,6 +104,74 @@ const DiagnosisPanel = forwardRef(({
               ))}
             </div>
 
+            {/* Copy / Download Chat */}
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => {
+                  const chatText = chatHistory
+                    .map((msg) => `${msg.role === 'user' ? 'You' : 'AI'}: ${msg.content}`)
+                    .join('\n\n');
+                  try {
+					  if (navigator.clipboard && navigator.clipboard.writeText) {
+						navigator.clipboard.writeText(chatText)
+						  .then(() => alert('📋 Chat copied to clipboard!'))
+						  .catch((err) => {
+							console.error("Clipboard API failed, falling back:", err);
+							fallbackCopyText(chatText);
+						  });
+					  } else {
+						fallbackCopyText(chatText);
+					  }
+					} catch (err) {
+					  console.error("Copy failed:", err);
+					  alert("❌ Copy failed. Try a supported browser or HTTPS.");
+					}
+
+					function fallbackCopyText(text) {
+					  const textarea = document.createElement("textarea");
+					  textarea.value = text;
+					  textarea.style.position = "fixed"; // Avoid scrolling to bottom
+					  document.body.appendChild(textarea);
+					  textarea.focus();
+					  textarea.select();
+					  try {
+						const successful = document.execCommand("copy");
+						if (successful) {
+						  alert("📋 Chat copied!");
+						} else {
+						  alert("❌ Fallback copy failed.");
+						}
+					  } catch (err) {
+						console.error("Fallback copy failed:", err);
+						alert("❌ Copy not supported in this browser.");
+					  }
+					  document.body.removeChild(textarea);
+					}
+				  }}
+				  className="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-2 rounded"
+				>
+                📋 Copy Chat
+              </button>
+              <button
+                onClick={() => {
+                  const chatText = chatHistory
+                    .map((msg) => `${msg.role === 'user' ? 'You' : 'AI'}: ${msg.content}`)
+                    .join('\n\n');
+                  const blob = new Blob([chatText], { type: 'text/plain' });
+                  const link = document.createElement('a');
+                  link.href = URL.createObjectURL(blob);
+                  link.download = 'diagnosis_chat.txt';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-2 rounded"
+              >
+                💾 Download Chat
+              </button>
+            </div>
+
+            {/* Follow-up Input */}
             <div className="flex gap-2">
               <input
                 type="text"
@@ -130,7 +198,7 @@ const DiagnosisPanel = forwardRef(({
                     alert("✅ Session marked as resolved.");
                   } catch (err) {
                     alert("Failed to mark session resolved.");
-                    console.error(err);
+                    console.error(err);c
                   }
                 }}
                 className="text-green-700 underline hover:text-green-900"
