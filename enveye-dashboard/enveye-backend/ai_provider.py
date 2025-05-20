@@ -11,7 +11,7 @@ MODEL_NAME = CONFIG["ai"]["model"]
 # Configure clients
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-perplexity_client = OpenAI(api_key=os.getenv("PERPLEXITY_API_KEY"))
+perplexity_client = OpenAI(api_key=os.getenv("PERPLEXITY_API_KEY"), base_url="https://api.perplexity.ai")
 
 
 def send_prompt(messages):
