@@ -1,12 +1,12 @@
 {
   "backend_ip": "http://10.40.10.214:8000",
   "agent_paths": {
-    "windows": "C:\\Tools\\Collector\\enveye-agent.exe",
+    "windows": "C:\\dist\\windows_amd64\\enveye-agent.exe",
     "linux": "/home/user/enveye/enveye-agent",
     "macos": "/Users/yourname/enveye/enveye-agent"
   },
   "ai": {
-    "vendor": "openai",
-    "model": "gpt-4"            
+    "vendor": "perplexity",
+    "model": "sonar-pro"            
   }
 }
