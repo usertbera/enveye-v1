@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://github.com/usertbera/enveye-mvp/raw/main/enveye-frontend/src/assets/logo_96x96.png" alt="EnvEye Logo" width="120" height="120"/>
+  <img src="https://github.com/usertbera/enveye-v1/blob/main/enveye-dashboard/enveye-frontend/src/assets/logo_96x96.png" alt="EnvEye Logo" width="120" height="120"/>
 </p>
 
 <h1 align="center">EnvEye - Intelligent Snapshot Comparator</h1>
@@ -11,10 +11,11 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/usertbera/enveye-mvp"><img alt="Built With" src="https://img.shields.io/badge/Built%20with-React%20%7C%20FastAPI%20%7C%20AI-blue?style=for-the-badge"/></a>
-  <a href="https://github.com/usertbera/enveye-mvp/blob/main/LICENSE">
-  <img alt="License" src="https://img.shields.io/github/license/usertbera/enveye-mvp?style=for-the-badge&cacheSeconds=60"/>
-</a>
+  <a href="https://github.com/usertbera/enveye-v1"><img alt="Built With" src="https://img.shields.io/badge/Built%20with-React%20%7C%20FastAPI%20%7C%20AI-blue?style=for-the-badge"/></a>
+  <a href="https://github.com/usertbera/enveye-v1/blob/main/LICENSE">
+  <a href="https://github.com/usertbera/enveye-v1/blob/main/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge"/>
+  </a>
   <img alt="OCR Enabled" src="https://img.shields.io/badge/OCR%20Support-Tesseract-informational?style=for-the-badge"/>
 </p>
 
@@ -29,8 +30,8 @@ Powered by popular AI models, it explains issues and suggests fixes instantly.
 Built for developers, DevOps, and IT support teams — to accelerate troubleshooting and root cause analysis.
 
 <p align="center">
-  <a href="https://youtu.be/kbgjsI6xAjk" target="_blank">
-    <img src="https://github.com/user-attachments/assets/eef63ec5-aa2c-41a0-8665-15e77cf7264a" alt="EnvEye Demo Video" width="600" style="border-radius: 8px;"/>
+  <a href="https://youtu.be/xwLIr30wqGQ" target="_blank">
+    <img src="https://github.com/user-attachments/assets/e45aeff2-977f-4a53-bd38-d4eaf9690b49" alt="EnvEye Demo Video" width="600" style="border-radius: 8px;"/>
     <br>
     <strong>▶️ Watch Demo Video</strong>
   </a>
@@ -40,10 +41,18 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 
 ## 📸 Screenshots
 
-![image](https://github.com/user-attachments/assets/e45aeff2-977f-4a53-bd38-d4eaf9690b49)
-![image](https://github.com/user-attachments/assets/035ce254-a1eb-40ea-b1fc-2024a1e3e596)
-![image](https://github.com/user-attachments/assets/1274751d-ce3d-465a-8a1d-d102c94d7459)
-![image](https://github.com/user-attachments/assets/66d9ecd1-385c-48bd-995a-f70ec748f78c)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e45aeff2-977f-4a53-bd38-d4eaf9690b49" alt="Screenshot 1" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/035ce254-a1eb-40ea-b1fc-2024a1e3e596" alt="Screenshot 2" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/45df4d05-027b-41e2-b868-8c2b0d0ceea3" alt="Screenshot 3" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/55c680c9-44a4-478e-a5b3-292165ab66eb" alt="Screenshot 4" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+</p>
 
 ---
 
@@ -63,12 +72,6 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 
 > A support engineer receives a critical bug report from staging: “It worked yesterday.”  
 > Using EnvEye, they instantly compare snapshots from today and yesterday, OCR a provided error screenshot, and get AI-generated insights into the root cause — saving hours of guesswork and back-and-forth debugging.
-
-### ✅ Aligned with Microsoft AI Ecosystem
-
-- Built with **Azure-compatible architecture** — can be easily adapted to use Azure OpenAI endpoints.
-- Designed as a modular **agent**, consistent with Microsoft's vision for autonomous, intelligent assistants.
-- Deployable in **Azure Functions**, container apps, or internal IT pipelines for scalable enterprise use.
 
 ---
 
