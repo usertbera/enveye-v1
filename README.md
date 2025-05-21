@@ -31,7 +31,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 
 <p align="center">
   <a href="https://youtu.be/xwLIr30wqGQ" target="_blank">
-    <img src="https://github.com/user-attachments/assets/e45aeff2-977f-4a53-bd38-d4eaf9690b49" alt="EnvEye Demo Video" width="600" style="border-radius: 8px;"/>
+    <img src="https://github.com/usertbera/enveye-v1/blob/main/enveye-dashboard/enveye-frontend/src/assets/screenshots/remote_collector.png" alt="EnvEye Demo Video" width="600" style="border-radius: 8px;"/>
     <br>
     <strong>▶️ Watch Demo Video</strong>
   </a>
@@ -42,16 +42,16 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e45aeff2-977f-4a53-bd38-d4eaf9690b49" alt="Screenshot 1" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+  <img src="https://github.com/usertbera/enveye-v1/blob/main/enveye-dashboard/enveye-frontend/src/assets/screenshots/remote_collector.png" alt="Screenshot 1" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
 </p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/035ce254-a1eb-40ea-b1fc-2024a1e3e596" alt="Screenshot 2" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+  <img src="https://github.com/usertbera/enveye-v1/blob/main/enveye-dashboard/enveye-frontend/src/assets/screenshots/snapshot_diff.png" alt="Screenshot 2" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
 </p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/45df4d05-027b-41e2-b868-8c2b0d0ceea3" alt="Screenshot 3" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+  <img src="https://github.com/usertbera/enveye-v1/blob/main/enveye-dashboard/enveye-frontend/src/assets/screenshots/ai_chat.png" alt="Screenshot 3" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
 </p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/55c680c9-44a4-478e-a5b3-292165ab66eb" alt="Screenshot 4" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
+  <img src="https://github.com/usertbera/enveye-v1/blob/main/enveye-dashboard/enveye-frontend/src/assets/screenshots/snaphot_viewer.png" alt="Screenshot 4" style="margin: 20px 0; width: 80%; max-width: 800px;"/>
 </p>
 
 ---
@@ -59,7 +59,7 @@ Built for developers, DevOps, and IT support teams — to accelerate troubleshoo
 ## 🛠️ EnvEye Architecture Diagram
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/bbfedc26-3234-4a5a-99fb-fd0a4ee0eeed" alt="EnvEye Architecture Diagram" width="600"/>
+  <img src="https://github.com/usertbera/enveye-v1/blob/main/enveye-dashboard/enveye-frontend/src/assets/Architechture_diagram/architechture_diagram.png" alt="EnvEye Architecture Diagram" width="600"/>
 </p>
 
 ----
