@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "envdiff"
+version = "0.1.0"
+description = "Diff two environment snapshots (env vars, feature flags, config) and explain what's likely to break."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "deepdiff>=6.7",
+    "pyyaml>=6.0",
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=0.30"]
+openai = ["openai>=1.0"]
+
+[project.scripts]
+envdiff = "envdiff.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["envdiff"]

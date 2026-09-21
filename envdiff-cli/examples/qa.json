@@ -1,0 +1,13 @@
+{
+  "APP_ENV": "qa",
+  "DATABASE_URL": "postgres://qa-db.internal:5432/app_qa",
+  "FEATURE_FLAGS": {
+    "new_checkout": true,
+    "dark_mode": false
+  },
+  "SERVICE_VERSIONS": {
+    "auth-service": "1.4.2",
+    "payment-service": "2.0.3"
+  },
+  "LOG_LEVEL": "info"
+}
