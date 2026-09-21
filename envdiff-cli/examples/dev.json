@@ -1,0 +1,14 @@
+{
+  "APP_ENV": "development",
+  "DATABASE_URL": "postgres://localhost:5432/app_dev",
+  "PAYMENT_TIMEOUT_MS": 3000,
+  "FEATURE_FLAGS": {
+    "new_checkout": true,
+    "dark_mode": true
+  },
+  "SERVICE_VERSIONS": {
+    "auth-service": "1.4.2",
+    "payment-service": "2.1.0"
+  },
+  "LOG_LEVEL": "debug"
+}
